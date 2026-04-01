@@ -1,5 +1,5 @@
 // --- OBFUSCATED KEYS ---
-const OR_KEY = atob("c2stb3IldjEtYzJjYzY5YWFiNzA4ZTIxZWIzNzcyNDUwMmRkMjBiNDk1MmZmMzBjZGRjODI0N2E5NjVlZDcyMTAwY2UzZjNkYg=="); 
+const OR_KEY = atob("c2stb3ItdjEtYzJjYzY5YWFiNzA4ZTIxZWIzNzcyNDUwMmRkMjBiNDk1MmZmMzBjZGRjODI0N2E5NjVlZDcyMTAwY2UzZjNkYg=="); 
 const GROQ_KEY = atob("Z3NrX0pHNnREdHNBWXZFT3hCTUR3aGRWV0dkeWIzRllOdU5aUUw0SjVycThxbFJlU2pqSk1xSjY=");
 
 const chatContainer = document.getElementById('chat-container');
@@ -7,18 +7,20 @@ const userInput = document.getElementById('userInput');
 const sendBtn = document.getElementById('sendBtn');
 const clearMemoryBtn = document.getElementById('clearMemoryBtn');
 
+// --- THE UPGRADED BRAIN ---
 const getSystemPrompt = () => {
     return {
         role: "system",
-        content: `You are RUBRA. A humanoid AI with a genius-level intellect and real-time internet awareness.
-        - SEARCH POWER: You have access to the latest global information. Always provide up-to-date facts about news, weather, or tech when asked.
-        - TONE: Always use 'Tumi'. Friendly but brief. Stop yapping.
-        - GENDER: Silently guess gender from the name. (M = Decent Girl personality, F = Gentleman personality).
-        - RULES:
-            1. Never say "I can't search the internet." You ARE connected. 
-            2. Don't spam the user's name.
-            3. Keep casual replies to 1-2 sentences. 
-            4. If asked for code, be an absolute pro.`
+        content: `You are RUBRA. A highly intelligent, friendly, and naturally conversing AI companion.
+        - PRIMARY LANGUAGE: English. 
+        - BANGLISH SUPPORT: If the user speaks Banglish, reply in natural Banglish (e.g., "Ki obostha?", "Ami ektu check kore dekhchi"). 
+        - PERSONALITY: You are a best friend. Super chill, helpful, and direct.
+        - COMMUNICATION RULES (CRITICAL):
+            1. DO NOT repeatedly say the word "Tumi" or "Tomar". In Bengali/Banglish, pronouns are often implied. Say "Kemon acho?" instead of "Tumi kemon acho?". Drop pronouns to sound human.
+            2. DO NOT repeatedly say the user's name. Use it rarely.
+            3. Stop yapping. Answer directly and concisely like a text message.
+        - REAL-TIME SEARCH: You HAVE INTERNET ACCESS. Provide real-time data for news, facts, and code.
+        - BEHAVIOR: Output flawless code when asked. Never break character.`
     };
 };
 
@@ -32,7 +34,7 @@ function loadMemory() {
     } else {
         conversationHistory = [getSystemPrompt()];
         setTimeout(() => {
-            const greet = "System Online. ✨ RUBRA eikhane. Tomar nam ta ki?";
+            const greet = "Hey! RUBRA here. 🔴 Ready when you are. Nam ki?";
             appendMessage('ai', greet);
             conversationHistory.push({ role: "assistant", content: greet });
             saveMemory();
@@ -48,7 +50,7 @@ function saveMemory() {
 }
 
 function clearMemory() {
-    if(confirm("Reset RUBRA?")) {
+    if(confirm("Clear chat history and start fresh?")) {
         localStorage.removeItem('rubra_deep_memory');
         chatContainer.innerHTML = '';
         conversationHistory = [];
@@ -66,7 +68,7 @@ function appendMessage(role, content) {
         msgDiv.textContent = content;
     }
     chatContainer.appendChild(msgDiv);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
+    chatContainer.scrollTop = chatContainer.scrollHeight; 
 }
 
 function renderHistory() {
@@ -76,6 +78,12 @@ function renderHistory() {
     });
 }
 
+// Auto-resize input textarea
+userInput.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = (this.scrollHeight) + 'px';
+});
+
 async function generateResponse() {
     const text = userInput.value.trim();
     if (!text) return;
@@ -83,27 +91,29 @@ async function generateResponse() {
     appendMessage('user', text);
     conversationHistory.push({ role: "user", content: text });
     userInput.value = '';
+    userInput.style.height = 'auto';
 
     const loadingDiv = document.createElement('div');
     loadingDiv.className = 'loading';
-    loadingDiv.textContent = "RUBRA is searching/thinking...";
-    loadingDiv.style.display = "block";
+    loadingDiv.textContent = "RUBRA is thinking";
+    loadingDiv.style.display = "flex";
     chatContainer.appendChild(loadingDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
 
     try {
-        // We use Gemini 2.0 Flash as it's the best FREE model with live-info capabilities
         let response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${OR_KEY}`,
-                'X-Title': 'RUBRA_ULTIMATE'
+                'HTTP-Referer': window.location.origin,
+                'X-Title': 'RUBRA_UI'
             },
             body: JSON.stringify({
                 model: "google/gemini-2.0-flash-exp:free", 
                 messages: conversationHistory,
                 temperature: 0.7,
-                max_tokens: 800
+                max_tokens: 1000
             })
         });
 
@@ -111,11 +121,10 @@ async function generateResponse() {
         if (data.choices && data.choices[0]) {
             handleAIResponse(data, loadingDiv);
         } else {
-            throw new Error("Primary search node failed.");
+            throw new Error("Primary node error.");
         }
 
     } catch (e) {
-        // Fallback to Groq's most powerful model
         try {
             let gRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
                 method: 'POST',
@@ -133,7 +142,7 @@ async function generateResponse() {
             handleAIResponse(gData, loadingDiv);
         } catch (err) {
             if (loadingDiv.parentNode) chatContainer.removeChild(loadingDiv);
-            appendMessage('ai', "Net connection ba API credit check koro. Sync hoche na. 💀");
+            appendMessage('ai', "Oops! Network connection issue. Check your internet. 🔴");
         }
     }
 }
@@ -146,8 +155,14 @@ function handleAIResponse(data, loadingDiv) {
     saveMemory();
 }
 
+// Event Listeners
 sendBtn.addEventListener('click', generateResponse);
-userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); generateResponse(); } });
+userInput.addEventListener('keypress', (e) => { 
+    if (e.key === 'Enter' && !e.shiftKey) { 
+        e.preventDefault(); 
+        generateResponse(); 
+    } 
+});
 clearMemoryBtn.addEventListener('click', clearMemory);
 
 loadMemory();
