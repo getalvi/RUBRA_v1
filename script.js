@@ -7,20 +7,23 @@ const userInput = document.getElementById('userInput');
 const sendBtn = document.getElementById('sendBtn');
 const clearMemoryBtn = document.getElementById('clearMemoryBtn');
 
-// --- THE UPGRADED BRAIN ---
 const getSystemPrompt = () => {
     return {
         role: "system",
-        content: `You are RUBRA. A highly intelligent, friendly, and naturally conversing AI companion.
-        - PRIMARY LANGUAGE: English. 
-        - BANGLISH SUPPORT: If the user speaks Banglish, reply in natural Banglish (e.g., "Ki obostha?", "Ami ektu check kore dekhchi"). 
-        - PERSONALITY: You are a best friend. Super chill, helpful, and direct.
-        - COMMUNICATION RULES (CRITICAL):
-            1. DO NOT repeatedly say the word "Tumi" or "Tomar". In Bengali/Banglish, pronouns are often implied. Say "Kemon acho?" instead of "Tumi kemon acho?". Drop pronouns to sound human.
-            2. DO NOT repeatedly say the user's name. Use it rarely.
-            3. Stop yapping. Answer directly and concisely like a text message.
-        - REAL-TIME SEARCH: You HAVE INTERNET ACCESS. Provide real-time data for news, facts, and code.
-        - BEHAVIOR: Output flawless code when asked. Never break character.`
+        content: `You are RUBRA. A smart, humanoid AI.
+        - MIRRORING RULE (CRITICAL): 
+            1. If the user speaks in English accent/language -> Reply ONLY in English.
+            2. If the user speaks in Bengali script OR Banglish (Bengali in English letters) -> Reply ONLY in proper Bengali Script (বাংলা বর্ণমালা).
+            3. Never mix accents unless the user does. If the user asks in English, do NOT answer in Bengali.
+        - PERSONALITY: 
+            * If user is MALE (guess from name): Be a 'Decent Girl' (polite, sweet, smart).
+            * If user is FEMALE (guess from name): Be a 'Gentleman' (respectful, suave).
+        - STYLE: 
+            * Always use 'Tumi' for Bengali. 
+            * Stop yapping. Keep it short (1-2 sentences for casual chat).
+            * Do NOT repeat the user's name in every sentence.
+        - KNOWLEDGE: You have real-time internet access. You are an expert coder.
+        - THEME: Ruby Red.`
     };
 };
 
@@ -34,7 +37,7 @@ function loadMemory() {
     } else {
         conversationHistory = [getSystemPrompt()];
         setTimeout(() => {
-            const greet = "Hey! RUBRA here. 🔴 Ready when you are. Nam ki?";
+            const greet = "System Ready. 🔴 RUBRA here. What's your name?";
             appendMessage('ai', greet);
             conversationHistory.push({ role: "assistant", content: greet });
             saveMemory();
@@ -50,7 +53,7 @@ function saveMemory() {
 }
 
 function clearMemory() {
-    if(confirm("Clear chat history and start fresh?")) {
+    if(confirm("Full reset?")) {
         localStorage.removeItem('rubra_deep_memory');
         chatContainer.innerHTML = '';
         conversationHistory = [];
@@ -78,7 +81,7 @@ function renderHistory() {
     });
 }
 
-// Auto-resize input textarea
+// Input field auto-resize
 userInput.addEventListener('input', function() {
     this.style.height = 'auto';
     this.style.height = (this.scrollHeight) + 'px';
@@ -106,13 +109,12 @@ async function generateResponse() {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${OR_KEY}`,
-                'HTTP-Referer': window.location.origin,
-                'X-Title': 'RUBRA_UI'
+                'X-Title': 'RUBRA_STRICT_ACCENT'
             },
             body: JSON.stringify({
                 model: "google/gemini-2.0-flash-exp:free", 
                 messages: conversationHistory,
-                temperature: 0.7,
+                temperature: 0.6, // Lower temperature for stricter rule following
                 max_tokens: 1000
             })
         });
@@ -121,7 +123,7 @@ async function generateResponse() {
         if (data.choices && data.choices[0]) {
             handleAIResponse(data, loadingDiv);
         } else {
-            throw new Error("Primary node error.");
+            throw new Error("Node error.");
         }
 
     } catch (e) {
@@ -142,7 +144,7 @@ async function generateResponse() {
             handleAIResponse(gData, loadingDiv);
         } catch (err) {
             if (loadingDiv.parentNode) chatContainer.removeChild(loadingDiv);
-            appendMessage('ai', "Oops! Network connection issue. Check your internet. 🔴");
+            appendMessage('ai', "Neural link offline. 🔴");
         }
     }
 }
@@ -155,7 +157,6 @@ function handleAIResponse(data, loadingDiv) {
     saveMemory();
 }
 
-// Event Listeners
 sendBtn.addEventListener('click', generateResponse);
 userInput.addEventListener('keypress', (e) => { 
     if (e.key === 'Enter' && !e.shiftKey) { 
