@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>RUBRA | Next-Gen AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <link rel="stylesheet" href="style.css">
@@ -28,7 +30,7 @@
             <div class="sidebar-info">
                 <p class="section-title">SYSTEM</p>
                 <div class="info-item"><span>Status:</span> <span class="text-green">Online</span></div>
-                <div class="info-item"><span>Core:</span> Rubra_flash1</div>
+                <div class="info-item"><span>Core:</span> Gemini 2.0 Flash</div>
             </div>
         </aside>
 
@@ -38,29 +40,24 @@
                     <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
                 </button>
                 <div class="header-title">Current Workspace ✨</div>
-                <div style="width: 24px;"></div> </header>
+                <div style="width: 24px;"></div>
+            </header>
 
-            <div id="chat-container">
-                </div>
+            <div id="chat-container"></div>
 
             <div class="input-area">
                 <div class="floating-input-wrapper">
                     <textarea id="userInput" placeholder="Ask RUBRA anything..." rows="1"></textarea>
-                    <button id="sendBtn" class="send-btn" title="Send Message">
+                    <button id="sendBtn" class="send-btn">
                         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                     </button>
                 </div>
-                <div class="footer-text">RUBRA may produce inaccurate information. Always double check.</div>
             </div>
         </main>
-
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
