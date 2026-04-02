@@ -3,38 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RUBRA | AI Workspace</title>
+    <title>RUBRA | Next-Gen AI</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="app-container">
-        <header>
-            <div class="header-left">
-                <div class="logo-icon">🤖</div>
-                <div class="header-text">
-                    <h1>RUBRA - Recursive Universal Bayesian Reasoning Architecture</h1>
-                    <span class="status">Online & Ready</span>
+        
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">🔴</span>
+                    <h2>RUBRA</h2>
                 </div>
+                <button id="closeSidebar" class="mobile-only-btn">✕</button>
             </div>
-            <button id="clearMemoryBtn" class="clear-btn" title="Reset Chat">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6"/></svg>
+            
+            <button id="newChatBtn" class="new-chat-btn">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                New Chat
             </button>
-        </header>
 
-        <main id="chat-container">
-            </main>
-
-        <div class="input-area">
-            <div class="input-wrapper">
-                <textarea id="userInput" placeholder="Message RUBRA..." rows="1"></textarea>
-                <button id="sendBtn" class="send-btn">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-                </button>
+            <div class="sidebar-info">
+                <p class="section-title">SYSTEM</p>
+                <div class="info-item"><span>Status:</span> <span class="text-green">Online</span></div>
+                <div class="info-item"><span>Core:</span> Rubra_flash1</div>
             </div>
-            <div class="footer-text">RUBRA can make mistakes. Consider verifying important information.</div>
-        </div>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <button id="menuBtn" class="menu-btn">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+                <div class="header-title">Current Workspace ✨</div>
+                <div style="width: 24px;"></div> </header>
+
+            <div id="chat-container">
+                </div>
+
+            <div class="input-area">
+                <div class="floating-input-wrapper">
+                    <textarea id="userInput" placeholder="Ask RUBRA anything..." rows="1"></textarea>
+                    <button id="sendBtn" class="send-btn" title="Send Message">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    </button>
+                </div>
+                <div class="footer-text">RUBRA may produce inaccurate information. Always double check.</div>
+            </div>
+        </main>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
